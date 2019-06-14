@@ -16,6 +16,7 @@ class ModuleMenu extends React.PureComponent {
                 onClick={this.props.updateModule}
                 selectedKeys={[this.props.currentModule]}
                 mode="horizontal"
+                theme="dark"
                 style={this.props.style}
             >
                 {list}

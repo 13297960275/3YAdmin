@@ -19,7 +19,8 @@ class TabMode extends React.PureComponent {
         collapsed: false,
         responsive: false,
         navTabShow: true,
-        navTabTop: 65
+        navTabTop: 65,
+        navTabWidth: '100%'
     }
     componentDidMount() {
         this.initAppData();//数据初始化完后再触发一次render
@@ -40,9 +41,11 @@ class TabMode extends React.PureComponent {
     }
     getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
         const clientWidth = document.body.clientWidth;
+        const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
         this.setState({
             responsive: clientWidth <= 992,
-            collapsed: clientWidth <= 992
+            collapsed: clientWidth <= 992,
+            // navTabWidth
         });
         if (clientWidth < 576) {
             this.setState({
@@ -70,7 +73,11 @@ class TabMode extends React.PureComponent {
         });
     }
     toggleNavTab = () => {
-        this.setState({ navTabShow: !this.state.navTabShow });
+        const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+        this.setState({ 
+            navTabShow: !this.state.navTabShow,
+            // navTabWidth
+        });
     }
     initAppData = async () => { //获取用户信息,菜单,权限列表(整个应用就一种layout布局,App就是相当母版页,不必在AuthrizedRoute里每次路由跳转的时候判断是否需要获取,是否登录也在此处判断)
         //没有登录，跳转到登录界面，并记下当前路径
@@ -109,6 +116,10 @@ class TabMode extends React.PureComponent {
     }
     initChildData(props) {
         this.refs['MySider'].wrappedInstance.initMenu(props.location.pathname);
+        // const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+        // this.setState({ 
+        //     navTabWidth
+        // });
     }
     render() {
         console.log("App render");
@@ -124,8 +135,8 @@ class TabMode extends React.PureComponent {
                     <MyHeader collapsed={this.state.collapsed} toggle={this.toggle} toggleNavTab={this.toggleNavTab} navTabshow={this.state.navTabShow}>
                     </MyHeader>
                     {/* <MyBreadcrumb style={{ padding: '10px 10px 10px 17px', background: 'rgb(250, 250, 250)', marginTop: this.state.navTabTop + 59 + (this.state.navTabShow ? 0 : -59) }} /> */}
-                    <Content style={{ padding: 24, paddingTop: 0, background: '#fff' }}>
-                        <MyNavTabs style={{ marginTop: this.state.navTabTop, width: '100%', display: this.state.navTabShow ? 'block' : 'none' }} show={this.state.navTabShow} />
+                    <Content style={{ padding: 24, paddingTop: 0 }}>
+                        <MyNavTabs style={{ marginTop: this.state.navTabTop, width: this.state.navTabWidth, display: this.state.navTabShow ? 'block' : 'none' }} show={this.state.navTabShow} />
                     </Content>
                 </Layout>
             </Layout>

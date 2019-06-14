@@ -12,7 +12,7 @@ const renderMenuItem =
         return <Item
             key={name}
         >
-            {link ? <Link to={link}><span>{icon && <Icon type={icon} style={{ color: '#08c' }} />}<span>{title}</span></span></Link> : <span>{icon && <Icon type={icon} style={{ color: '#08c' }} />}<span>{title}</span></span>}
+            {link ? <Link to={link}><span>{icon && <Icon type={icon} />}<span>{title}</span></span></Link> : <span>{icon && <Icon type={icon} />}<span>{title}</span></span>}
         </Item>;
     }
 
@@ -22,7 +22,7 @@ const renderSubMenu =
             key={name}
             title={
                 <span>
-                    {icon && <Icon type={icon} style={{ color: '#08c' }} />}
+                    {icon && <Icon type={icon} />}
                     <span>{title}</span>
                 </span>
             }
@@ -34,7 +34,7 @@ const renderSubMenu =
             )}
         </SubMenu>;
 
-export default ({ menus, ...props }) => <Menu {...props}>
+export default ({ menus, ...props }) => <Menu theme="dark" {...props}>
     {menus && menus.map(
         item => item.children && item.children.length ?
             renderSubMenu(item) : renderMenuItem(item)

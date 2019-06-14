@@ -91,7 +91,7 @@ class MyNavTabs extends React.PureComponent {
         <Tabs
           hideAdd
           activeKey={this.state.currentPage}
-          tabBarStyle={{ background: 'white', padding: 10, margin: 0, border: 'none' }}
+          tabBarStyle={{ background: '#e8e8e8', padding: 10, margin: 0, border: 'none' }}
           type="editable-card"
           onEdit={this.onEdit}
           onTabClick={this.onTabClick}

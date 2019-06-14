@@ -39,7 +39,7 @@ class MyBreadcrumb extends React.PureComponent {
 
     }
     render() {
-        console.log("MyBreadcrumb render")
+        console.log("MyBreadcrumb render", this.state.map)
         return (
             <Breadcrumb style={this.props.style}>
                 {this.state.map.map(

@@ -27,8 +27,13 @@ class MyHeader extends React.PureComponent {
         });
     }
     menuClick = e => {
-        e.key === 'logout' && this.logout();
-        e.key === 'navTab' && this.props.toggleNavTab && this.props.toggleNavTab();
+        if (e.key === 'logout') {
+            this.logout();
+        } else {
+            this.props.toggleNavTab();
+        }
+        // e.key === 'logout' && this.logout();
+        // e.key === 'navTab' && this.props.toggleNavTab && this.props.toggleNavTab();
     }
     logout = async () => {
         try {
@@ -42,7 +47,7 @@ class MyHeader extends React.PureComponent {
     render() {
         console.log("MyHeader render")//withRouter的缘故，每次点击同一个菜单，都会re-render
         return (
-            <Header style={{ background: '#fff', padding: 0, height: 'auto', position: 'fixed', width: '100%', zIndex: 9 }}>
+            <Header style={{ padding: 0, height: 'auto', position: 'fixed', width: '100%', zIndex: 9 }}>
                 <Row type="flex" justify="start">
                     <Col xs={6} sm={6} md={2} lg={2} xl={1}>
                         <ul className="top-nav" style={{ lineHeight: '65px', marginLeft: 10 }}>
@@ -66,22 +71,38 @@ class MyHeader extends React.PureComponent {
                     <Col xs={24} sm={12} md={5} lg={5} xl={9} style={{ textAlign: 'center' }}>
                         <SearchInput style={{ display: 'inline-block', padding: '0px 20px', width: '100%' }} />
                     </Col>
-                    <Col xs={8} sm={4} md={2} lg={1} xl={2} style={{ textAlign: 'right' }}>
+                    <Col xs={8} sm={4} md={3} lg={2} xl={3} style={{ textAlign: 'right' }}>
                         <ul className="top-nav" style={{ lineHeight: '65px' }}>
                             <li>
                                 <a className="item" href="https://github.com/wjkang/3YAdmin" target={"_blank"}>
                                     <Icon type="github" />
                                 </a>
                             </li>
+                            <li>
+                                <a className="item" href="javascript:;" target={"_blank"}>
+                                    <FullScreen />
+                                </a>
+                            </li>
+                            {
+                                process.env.REACT_APP_LAYOUT_MODE !== 'tab' ? 
+                                    <li>
+                                        <a className="item" href="javascript:;" target={"_blank"}>
+                                            <Icon key="navTab" onClick={this.menuClick} type={this.props.navTabshow ? 'arrow-up' : 'arrow-down'} style={{ fontSize: 16 }} />
+                                        </a>
+                                    </li>
+                                    :
+                                    null
+                            }
                         </ul>
                     </Col>
-                    <Col xs={16} sm={8} md={7} lg={6} xl={7}>
+                    <Col xs={16} sm={8} md={6} lg={5} xl={6}>
                         <Menu
                             mode="horizontal"
                             style={{ lineHeight: '64px' }}
                             onClick={this.menuClick}
+                            theme="dark"
                         >
-                            <Menu.Item key="full">
+{/*                             <Menu.Item kye="full">
                                 <FullScreen />
                             </Menu.Item>
                             {
@@ -91,7 +112,7 @@ class MyHeader extends React.PureComponent {
                                     </Menu.Item>
                                     :
                                     null
-                            }
+                            } */}
                             <SubMenu title={<span className="avatar"><img src={this.props.avatar} alt="头像" /><i className="on bottom b-white" /></span>}>
                                 <MenuItemGroup title="用户中心">
                                     <Menu.Item key="setting:1">你好 - {this.props.name}</Menu.Item>
