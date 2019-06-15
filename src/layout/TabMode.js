@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Layout } from 'antd';
+import { Layout, Row, Col } from 'antd';
 import './TabMode.css';
 import MyHeader from '@/containers/MyHeader';
+import MyBreadcrumb from '@/containers/MyBreadcrumb';
 import MySider from '@/containers/MySider';
 import MyNavTabs from '@/containers/MyNavTabsR';
 import { getToken } from '@/utils/token';
@@ -39,13 +40,27 @@ class TabMode extends React.PureComponent {
             this.initChildData(nextProps)
         }
     }
+    componentDidUpdate() {
+        console.log('componentDidUpdate')
+        const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+        this.setState({ 
+            navTabWidth
+        });
+    }
+    // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
+    //     console.log('componentWillReceiveProps: ', nextProps)
+    //     const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+    //     this.setState({ 
+    //         navTabWidth
+    //     });
+    // }
     getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
         const clientWidth = document.body.clientWidth;
         const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
         this.setState({
             responsive: clientWidth <= 992,
             collapsed: clientWidth <= 992,
-            // navTabWidth
+            navTabWidth
         });
         if (clientWidth < 576) {
             this.setState({
@@ -73,10 +88,8 @@ class TabMode extends React.PureComponent {
         });
     }
     toggleNavTab = () => {
-        const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
         this.setState({ 
             navTabShow: !this.state.navTabShow,
-            // navTabWidth
         });
     }
     initAppData = async () => { //获取用户信息,菜单,权限列表(整个应用就一种layout布局,App就是相当母版页,不必在AuthrizedRoute里每次路由跳转的时候判断是否需要获取,是否登录也在此处判断)
@@ -116,10 +129,6 @@ class TabMode extends React.PureComponent {
     }
     initChildData(props) {
         this.refs['MySider'].wrappedInstance.initMenu(props.location.pathname);
-        // const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
-        // this.setState({ 
-        //     navTabWidth
-        // });
     }
     render() {
         console.log("App render");
@@ -134,9 +143,9 @@ class TabMode extends React.PureComponent {
                 <Layout>
                     <MyHeader collapsed={this.state.collapsed} toggle={this.toggle} toggleNavTab={this.toggleNavTab} navTabshow={this.state.navTabShow}>
                     </MyHeader>
-                    {/* <MyBreadcrumb style={{ padding: '10px 10px 10px 17px', background: 'rgb(250, 250, 250)', marginTop: this.state.navTabTop + 59 + (this.state.navTabShow ? 0 : -59) }} /> */}
+                    {/* <MyBreadcrumb style={{ padding: '10px 10px 10px 17px', background: '#e6f7ff', marginTop: this.state.navTabTop + 59 + (this.state.navTabShow ? 0 : -59) }} /> */}
                     <Content style={{ padding: 24, paddingTop: 0 }}>
-                        <MyNavTabs style={{ marginTop: this.state.navTabTop, width: this.state.navTabWidth, display: this.state.navTabShow ? 'block' : 'none' }} show={this.state.navTabShow} />
+                        <MyNavTabs navWith={ this.state.navTabWidth } style={{ marginTop: this.state.navTabTop, display: this.state.navTabShow ? 'block' : 'none' }} show={this.state.navTabShow} />
                     </Content>
                 </Layout>
             </Layout>

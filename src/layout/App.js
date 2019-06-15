@@ -43,13 +43,27 @@ class App extends Component {
       this.initChildData(nextProps)
     }
   }
+  // componentDidUpdate() {
+  //   console.log('componentDidUpdate')
+  //     const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+  //     this.setState({ 
+  //         navTabWidth
+  //     });
+  // }
+  componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
+    console.log('componentWillReceiveProps: ', /* nextProps */)
+    const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+    this.setState({ 
+      navTabWidth
+    });
+  }
   getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
     const clientWidth = document.body.clientWidth;
     const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
     this.setState({
       responsive: clientWidth <= 992,
       collapsed: clientWidth <= 992,
-      // navTabWidth
+      navTabWidth
     });
     if (clientWidth < 576) {
       this.setState({
@@ -77,10 +91,8 @@ class App extends Component {
     });
   }
   toggleNavTab = () => {
-    const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
     this.setState({ 
         navTabShow: !this.state.navTabShow,
-        // navTabWidth
     });
   }
   initAppData = async () => { //获取用户信息,菜单,权限列表(整个应用就一种layout布局,App就是相当母版页,不必在AuthrizedRoute里每次路由跳转的时候判断是否需要获取,是否登录也在此处判断)
@@ -120,10 +132,6 @@ class App extends Component {
   }
   initChildData(props) {
     this.refs['MySider'].wrappedInstance.initMenu(props.location.pathname);
-    // const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
-    // this.setState({ 
-    //     navTabWidth
-    // });
   }
   render() {
     console.log("App render");
