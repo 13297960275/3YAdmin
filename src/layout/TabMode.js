@@ -21,7 +21,8 @@ class TabMode extends React.PureComponent {
         responsive: false,
         navTabShow: true,
         navTabTop: 65,
-        navTabWidth: '100%'
+        navTabWidth: '100%',
+        headerWidth: '100%'
     }
     componentDidMount() {
         this.initAppData();//数据初始化完后再触发一次render
@@ -42,9 +43,12 @@ class TabMode extends React.PureComponent {
     }
     componentDidUpdate() {
         console.log('componentDidUpdate')
+        const clientWidth = document.body.clientWidth;
         const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+        const headerWidth = clientWidth - document.getElementsByClassName('ant-layout-sider')[0].clientWidth
         this.setState({ 
-            navTabWidth
+            navTabWidth,
+            headerWidth
         });
     }
     // componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
@@ -57,10 +61,12 @@ class TabMode extends React.PureComponent {
     getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
         const clientWidth = document.body.clientWidth;
         const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+        const headerWidth = clientWidth - document.getElementsByClassName('ant-layout-sider')[0].clientWidth
         this.setState({
             responsive: clientWidth <= 992,
             collapsed: clientWidth <= 992,
-            navTabWidth
+            navTabWidth,
+            headerWidth
         });
         if (clientWidth < 576) {
             this.setState({
@@ -141,7 +147,7 @@ class TabMode extends React.PureComponent {
                 >
                 </MySider>
                 <Layout>
-                    <MyHeader collapsed={this.state.collapsed} toggle={this.toggle} toggleNavTab={this.toggleNavTab} navTabshow={this.state.navTabShow}>
+                    <MyHeader collapsed={this.state.collapsed} headerWidth={this.state.headerWidth} toggle={this.toggle} toggleNavTab={this.toggleNavTab} navTabshow={this.state.navTabShow}>
                     </MyHeader>
                     {/* <MyBreadcrumb style={{ padding: '10px 10px 10px 17px', background: '#e6f7ff', marginTop: this.state.navTabTop + 59 + (this.state.navTabShow ? 0 : -59) }} /> */}
                     <Content style={{ padding: 24, paddingTop: 0 }}>

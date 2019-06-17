@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Menu, Icon, Layout, Row, Col } from 'antd';
+import { Menu, Icon, Layout } from 'antd';
 import { connect } from 'react-redux';
 import '@/style/header.less';
 import ModuleMenu from '@/components/ModuleMenu';
@@ -45,11 +45,11 @@ class MyHeader extends React.PureComponent {
         this.props.history.push('/login')
     }
     render() {
+        const headerWidth = this.props.headerWidth
         console.log("MyHeader render")//withRouter的缘故，每次点击同一个菜单，都会re-render
         return (
             <Header style={{ padding: 0, height: 'auto', position: 'fixed', width: '100%', zIndex: 9 }}>
-                <Row type="flex" justify="start">
-{/*                     <ul className="top-nav" style={{ lineHeight: '65px', marginLeft: 10 }}>
+                    <ul className="top-nav" style={{ lineHeight: '65px', marginLeft: 10, width: headerWidth, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <li>
                             <a className="item" onClick={this.props.toggle} href="javascript:;" target={"_blank"}>
                                 <Icon type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'} />
@@ -63,55 +63,57 @@ class MyHeader extends React.PureComponent {
                                 currentModule={this.props.currentModule}
                             />
                         </li>
-                        <li>
+                        <li style={{ width: '25em' }}>
                             <SearchInput style={{ display: 'inline-block', padding: '0px 20px', width: '100%' }} />
                         </li>
                         <li>
-                            <a className="item" href="https://github.com/wjkang/3YAdmin" target={"_blank"}>
-                                <Icon type="github" />
-                            </a>
-                        </li>
-                        <li>
-                            <a className="item" href="javascript:;" target={"_blank"}>
-                                <FullScreen />
-                            </a>
-                        </li>
-                        {
-                            process.env.REACT_APP_LAYOUT_MODE !== 'tab' ? 
+                            <ul className="top-nav" style={{ lineHeight: '65px' }}>
                                 <li>
-                                    <a className="item" href="javascript:;" target={"_blank"}>
-                                        <Icon key="navTab" onClick={this.menuClick} type={this.props.navTabshow ? 'arrow-up' : 'arrow-down'} style={{ fontSize: 16 }} />
+                                    <a className="item" href="https://github.com/wjkang/3YAdmin" target={"_blank"}>
+                                        <Icon type="github" />
                                     </a>
                                 </li>
-                                :
-                                null
-                        }
-                        <li>
-                            <Menu
-                                mode="horizontal"
-                                style={{ lineHeight: '64px' }}
-                                onClick={this.menuClick}
-                                theme="dark"
-                            >
-                                <SubMenu title={<span className="avatar"><img src={this.props.avatar} alt="头像" /><i className="on bottom b-white" /></span>}>
-                                    <MenuItemGroup title="用户中心">
-                                        <Menu.Item key="setting:1">你好 - {this.props.name}</Menu.Item>
-                                        <Menu.Item key="setting:2"><Icon type="user" />个人信息</Menu.Item>
-                                        <Menu.Item key="logout"><span onClick={this.logout}><Icon type="logout" />退出登录</span></Menu.Item>
-                                    </MenuItemGroup>
-                                </SubMenu>
-                            </Menu>
+                                <li>
+                                    <a className="item" href="javascript:;" target={"_blank"}>
+                                        <FullScreen />
+                                    </a>
+                                </li>
+                                {
+                                    process.env.REACT_APP_LAYOUT_MODE !== 'tab' ? 
+                                        <li>
+                                            <a className="item" href="javascript:;" target={"_blank"}>
+                                                <Icon key="navTab" onClick={this.menuClick} type={this.props.navTabshow ? 'arrow-up' : 'arrow-down'} style={{ fontSize: 16 }} />
+                                            </a>
+                                        </li>
+                                        :
+                                        null
+                                }
+                            </ul>
                         </li>
-                    </ul> */}
+                        <li>
+                        <Menu
+                            mode="horizontal"
+                            style={{ lineHeight: '64px' }}
+                            onClick={this.menuClick}
+                            theme="dark"
+                        >
+                            <SubMenu title={<span className="avatar"><img src={this.props.avatar} alt="头像" /><i className="on bottom b-white" /></span>}>
+                                <MenuItemGroup title="用户中心">
+                                    <Menu.Item key="setting:1">你好 - {this.props.name}</Menu.Item>
+                                    <Menu.Item key="setting:2"><Icon type="user" />个人信息</Menu.Item>
+                                    <Menu.Item key="logout"><span onClick={this.logout}><Icon type="logout" />退出登录</span></Menu.Item>
+                                </MenuItemGroup>
+                            </SubMenu>
+                        </Menu>
+                        </li>
+                    </ul>
+                {/* <Row type="flex" justify="start">
                     <Col xs={6} sm={6} md={2} lg={2} xl={2}>
                         <ul className="top-nav" style={{ lineHeight: '65px', marginLeft: 10 }}>
                             <li>
                                 <a className="item" onClick={this.props.toggle} href="javascript:;" target={"_blank"}>
                                     <Icon type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'} />
                                 </a>
-                                {/* <div className="item" onClick={this.props.toggle}>
-                                    <Icon type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'} />
-                                </div> */}
                             </li>
                         </ul>
                     </Col>
@@ -123,7 +125,7 @@ class MyHeader extends React.PureComponent {
                             currentModule={this.props.currentModule}
                         />
                     </Col>
-                    <Col xs={18} sm={18} md={6} lg={4} xl={7} style={{ textAlign: 'center' }}>
+                    <Col xs={18} sm={18} md={6} lg={4} xl={6} style={{ textAlign: 'center' }}>
                         <SearchInput style={{ display: 'inline-block', padding: '0px 20px', width: '100%' }} />
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={4} xl={4} style={{ textAlign: 'right' }}>
@@ -157,17 +159,6 @@ class MyHeader extends React.PureComponent {
                             onClick={this.menuClick}
                             theme="dark"
                         >
-                            {/* <Menu.Item kye="full">
-                                <FullScreen />
-                            </Menu.Item>
-                            {
-                                process.env.REACT_APP_LAYOUT_MODE !== 'tab' ?
-                                    <Menu.Item key="navTab">
-                                        <Icon type={this.props.navTabshow ? 'arrow-up' : 'arrow-down'} style={{ fontSize: 16 }} />
-                                    </Menu.Item>
-                                    :
-                                    null
-                            } */}
                             <SubMenu title={<span className="avatar"><img src={this.props.avatar} alt="头像" /><i className="on bottom b-white" /></span>}>
                                 <MenuItemGroup title="用户中心">
                                     <Menu.Item key="setting:1">你好 - {this.props.name}</Menu.Item>
@@ -177,7 +168,7 @@ class MyHeader extends React.PureComponent {
                             </SubMenu>
                         </Menu>
                     </Col>
-                </Row>
+                </Row> */}
             </Header>
         )
     }
