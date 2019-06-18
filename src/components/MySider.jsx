@@ -17,7 +17,7 @@ class MySider extends React.PureComponent {
                 collapsed={this.props.collapsed}
                 // style={{ background: '#fff' }}
             >
-                <div className="logo" style={{ paddingLeft: this.props.collapsed ? '14px' : '6px' }}><img src={logo} alt="" /><h3>3YAdmin</h3></div>
+                <div className="logo" style={{ paddingLeft: '8px' }}><img src={logo} alt="" /><h3>3YAdmin</h3></div>
                 <SiderMenu
                     menus={this.props.menus}
                     mode="inline"

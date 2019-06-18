@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import './App.css';
@@ -16,7 +16,7 @@ import constantMenu from '@/constantMenu';
 
 const { Content } = Layout;
 
-class App extends Component {
+class App extends React.PureComponent {
   state = {
     collapsed: false,
     responsive: false,
@@ -41,22 +41,19 @@ class App extends Component {
       this.initChildData(nextProps)
     }
   }
-  // componentDidUpdate() {
-  //   console.log('componentDidUpdate')
-  //     const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
-  //     this.setState({ 
-  //         navTabWidth
-  //     });
-  // }
-  componentWillReceiveProps(nextProps) { // 父组件重传props时就会调用这个方法
-    console.log('componentWillReceiveProps: ', /* nextProps */)
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate')
     const clientWidth = document.body.clientWidth;
     const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
-    const headerWidth = clientWidth - document.getElementsByClassName('ant-layout-sider')[0].clientWidth
-    this.setState({ 
-      navTabWidth,
-      headerWidth
-    });
+    const sliderWidth = document.getElementsByClassName('ant-layout-sider')[0].clientWidth
+    const headerWidth = clientWidth - sliderWidth
+    // console.log(clientWidth, navTabWidth, headerWidth, sliderWidth, prevState, this.state)
+    if (prevState.collapsed == this.state.collapsed) {
+        this.setState({ 
+            navTabWidth: navTabWidth,
+            headerWidth: headerWidth
+        });
+    }
   }
   getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
     const clientWidth = document.body.clientWidth;
@@ -88,10 +85,16 @@ class App extends Component {
     }
   }
   toggle = () => {
-    this.refs['MySider'].wrappedInstance.setOpenKeys(this.state.collapsed);//https://github.com/ant-design/ant-design/issues/8911
+    const clientWidth = document.body.clientWidth;
+    const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
+    const sliderWidth = document.getElementsByClassName('ant-layout-sider')[0].clientWidth
+    const headerWidth = clientWidth - sliderWidth
     this.setState({
-      collapsed: !this.state.collapsed,
+        collapsed: !this.state.collapsed,
+        navTabWidth: !this.state.collapsed ? navTabWidth + 120 : navTabWidth - 120 ,
+        headerWidth: !this.state.collapsed ? headerWidth + 120 : headerWidth - 120 
     });
+    this.refs['MySider'].wrappedInstance.setOpenKeys(this.state.collapsed);//https://github.com/ant-design/ant-design/issues/8911
   }
   toggleNavTab = () => {
     this.setState({ 
