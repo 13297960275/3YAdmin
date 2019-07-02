@@ -21,6 +21,7 @@ class Login extends React.PureComponent {
     }
     handleSubmit = (e) => {
         const { history } = this.props;
+        // console.log(this.props)
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
@@ -33,7 +34,7 @@ class Login extends React.PureComponent {
                     setToken(data.accessToken);
                 }
                 catch (e) {
-
+                    console.log(e)
                 }
                 setTimeout(() => {
                     this.endLogin();

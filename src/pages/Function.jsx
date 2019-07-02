@@ -68,7 +68,7 @@ class Function extends React.PureComponent {
                 >
                     编辑
                 </a>
-                <Divider type="vertical" />
+                <Divider style={{ margin: '14px 0' }} type="vertical" />
                 <Popconfirm title="确定删除?" onConfirm={() => this.delFunction(record.id)}>
                     <a href="javascript:;">删除</a>
                 </Popconfirm>
@@ -242,7 +242,7 @@ class Function extends React.PureComponent {
         return (
             <div>
                 <SearchForm schema={schema.searchSchema} uiSchema={schema.searchUiSchema} handleSubmit={this.handleSearch} handleReset={this.handleReset} />
-                <Divider />
+                <Divider style={{ margin: '14px 0' }} />
                 <div style={{ marginBottom: 16 }}>
                     <PermissionContainer permission={["function_edit"]}>
                         <Button
@@ -253,7 +253,7 @@ class Function extends React.PureComponent {
                             新增
                     </Button>
                     </PermissionContainer>
-                    <Divider type="vertical" />
+                    <Divider style={{ margin: '14px 0' }} type="vertical" />
                     <PermissionContainer permission={["function_del"]}>
                         <Popconfirm title="确定删除?" onConfirm={this.batchDelFunction}>
                             <Button

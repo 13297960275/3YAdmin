@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import MenuToRouter from '@/menuMapToRouter';
+import MenuToRouter from '@/routers/menuMapToRouter';
 import Page403 from '@/pages/Page403';
 
 class AuthorizedRoute extends React.Component {

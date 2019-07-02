@@ -1,7 +1,11 @@
 import React from 'react';
-import { Row, Col, Tree, Form, Input, Button, Switch, InputNumber, message, Tag, TreeSelect, Icon } from 'antd';
-import { getAllMenu, saveMenu } from 'api';
+import { Row, Col, Tree, Form, Input, Button, Switch, InputNumber, message, Tag, TreeSelect, Icon, Popconfirm } from 'antd';
+import { getAllMenu, getAccessMemu, saveMenu, delMenu } from 'api';
 import Icons from '@/Icons';
+import { connect } from 'react-redux';
+import { updateAccessMenu } from '@/redux/reducers/app';
+import util from '@/utils/util';
+import constantMenu from '@/routers/customMenu';
 
 const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item;
@@ -23,17 +27,41 @@ class Menu extends React.PureComponent {
             parentId: 0
         },
         selected: false,
-        addChild: false
+        addChild: false,
+        delEnable: true,
+        visible: false
     }
     componentDidMount() {
         this.initData();
+        // console.log(this.props);
     }
     initData = async () => {
-        let menuListRes = await getAllMenu();
+        // let menuListRes = await getAllMenu();
+        // let menuList = menuListRes.data;
+        // this.setState({
+        //     menuList: menuList
+        // })
+        // console.log(menuList);
+        
+        let [menuListRes, menuRes] = await Promise.all([getAllMenu(), getAccessMemu()]);
         let menuList = menuListRes.data;
         this.setState({
             menuList: menuList
         })
+        menuRes.data.push(...constantMenu);
+        let openAccesseMenu = util.openAccesseMenu(menuRes.data);
+        let moduleList = menuRes.data.filter(item => {
+            return item.leftMemu
+        });
+        let currentModule = this.props.currentModule;
+        let moduleMenu = this.props.moduleMenu;
+        this.props.updateAccessMenu({
+            currentModule: currentModule,
+            accessMenu: menuRes.data,
+            openAccessMenu: openAccesseMenu,
+            moduleMenu: moduleMenu,
+            moduleList: moduleList
+        });
     }
 
     onSelect = (selectedKeys, info) => {
@@ -43,6 +71,7 @@ class Menu extends React.PureComponent {
             this.setState({
                 selected: false,
                 addChild: false,
+                delEnable: true,
                 tempMenu: {
                     id: '',
                     parentId: 0
@@ -55,6 +84,7 @@ class Menu extends React.PureComponent {
         this.setState({
             selected: true,
             addChild: false,
+            delEnable: false,
             tempMenu: { ...menu }
         });
         setFieldsValue({
@@ -93,9 +123,49 @@ class Menu extends React.PureComponent {
                 try {
                     await saveMenu(data);
                     message.success('提交成功');
+                    // window.location.reload();
                     this.initData();
                 } catch (ex) {
                     console.log(ex);
+                }
+
+            }
+        });
+    }
+    confirm = () => {
+        this.setState({ visible: false });
+        // message.success('Next step.');
+        this.props.form.validateFieldsAndScroll(async (err, values) => {
+            if (!err) {
+                let data = { id: this.state.tempMenu.id, parentId: this.state.tempMenu.parentId, ...values };
+                try {
+                    await delMenu(data.id);
+                    message.success('删除成功');
+                    // window.location.reload();
+                    this.initData();
+                } catch (ex) {
+                    console.log(ex);
+                }
+            }
+        });
+    }
+    cancel = () => {
+        this.setState({ visible: false });
+        // message.error('Click on cancel.');
+    }
+    handleVisibleChange = visible => {
+        if (!visible) {
+          this.setState({ visible });
+          return;
+        }
+        this.props.form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                let data = { id: this.state.tempMenu.id, parentId: this.state.tempMenu.parentId, ...values };
+                if (data.parentId == 0) {
+                    this.setState({ visible: true }); // show the popconfirm 顶层菜单
+                } else {
+                    this.setState({ visible: false });
+                    this.confirm(); // next step 费顶层菜单直接删除
                 }
 
             }
@@ -105,6 +175,7 @@ class Menu extends React.PureComponent {
         this.setState({
             addChild: true,
             selected: false,
+            delEnable: true,
             tempMenu: {
                 ...this.state.tempMenu,
                 id: '',
@@ -117,6 +188,7 @@ class Menu extends React.PureComponent {
         this.setState({
             addChild: false,
             selected: false,
+            delEnable: true,
             tempMenu: {
                 ...this.state.tempMenu,
                 id: '',
@@ -134,25 +206,13 @@ class Menu extends React.PureComponent {
         )
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 8 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 16 },
-            },
+            labelCol: { xs: { span: 24 }, sm: { span: 8 }, },
+            wrapperCol: { xs: { span: 24 }, sm: { span: 16 }, },
         };
         const tailFormItemLayout = {
             wrapperCol: {
-                xs: {
-                    span: 24,
-                    offset: 0,
-                },
-                sm: {
-                    span: 16,
-                    offset: 8,
-                },
+                xs: { span: 24, offset: 0, },
+                sm: { span: 16, offset: 8, },
             },
         };
         return (
@@ -255,7 +315,6 @@ class Menu extends React.PureComponent {
                                         placeholder="Please select"
                                         allowClear
                                         treeDefaultExpandAll
-
                                     >
                                         {iconsTree}
                                     </TreeSelect>
@@ -264,6 +323,17 @@ class Menu extends React.PureComponent {
 
                             <FormItem {...tailFormItemLayout}>
                                 <Button type="primary" htmlType="submit">提交</Button>
+                                <Popconfirm
+                                    title="确认要删除当前菜单？"
+                                    visible={this.state.visible}
+                                    onVisibleChange={this.handleVisibleChange}
+                                    onConfirm={this.confirm}
+                                    onCancel={this.cancel}
+                                    okText="确认"
+                                    cancelText="取消"
+                                    >
+                                    <Button type="danger" htmlType="button" disabled={this.state.delEnable}>删除</Button>
+                                </Popconfirm>
                             </FormItem>
                         </Form>
                     </Col>
@@ -273,4 +343,22 @@ class Menu extends React.PureComponent {
     }
 }
 
-export default Form.create()(Menu);
+const mapStateToProps = state => {
+    return {
+        currentModule: state.app.currentModule,
+        accessMenu: state.app.accessMenu,
+        openAccessMenu: state.app.openAccessMenu,
+        moduleMenu: state.app.moduleMenu,
+        moduleList: state.app.moduleList
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        updateAccessMenu: (accessMenu) => {
+            dispatch(updateAccessMenu(accessMenu))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)((Form.create()(Menu)));
+
+// export default Form.create()(Menu);

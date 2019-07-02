@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 class ModuleMenu extends React.PureComponent {
     render() {
         const list = [];
+        // console.log(this.props.moduleList)
         for (let item of this.props.moduleList) {
             list.push(
                 <Menu.Item key={item.name}>

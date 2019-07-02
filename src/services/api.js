@@ -108,6 +108,16 @@ export function saveMenu(menu) {
   })
 }
 
+export function delMenu(id) {
+  return request({
+    url: '/menu/delmenu',
+    method: 'delete',
+    data: id,
+    loading: "message",
+    permission: ["menu_del"]
+  })
+}
+
 export function getMenuFunctions(menuId) {
   return request({
     url: '/menu/menufunctions',

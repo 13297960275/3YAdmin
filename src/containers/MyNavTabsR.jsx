@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 import { withRouter } from 'react-router-dom';
-import MenuToRouter from '@/menuMapToRouter';
-import MenuMapToComponent from '@/menuMapToComponent';
+import MenuToRouter from '@/routers/menuMapToRouter';
+import MenuMapToComponent from '@/routers/menuMapToComponent';
 
 const TabPane = Tabs.TabPane;
 

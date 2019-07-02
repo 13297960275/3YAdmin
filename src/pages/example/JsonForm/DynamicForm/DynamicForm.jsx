@@ -450,7 +450,7 @@ class DynamicFormTest extends React.PureComponent {
                     <Button type="primary" onClick={this.parseSchema}>重新解析</Button>
                 </div>
                 {this.state.error != '' ? <div>{this.state.error}</div> : null}
-                <Divider />
+                <Divider style={{ margin: '14px 0' }} />
                 <DynamicForm
                     ref={(instance) => { this.editForm = instance; }}
                     toggleParseSchema={this.state.toggleParseSchema}

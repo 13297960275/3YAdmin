@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateModule } from '@/reducers/app';
+import { updateModule } from '@/redux/reducers/app';
 import MySider from '@/components/MySider';
-import MenuToRouter from '@/menuMapToRouter';
+import MenuToRouter from '@/routers/menuMapToRouter';
 import util from '@/utils/util';
 
 class MySiderContainer extends React.PureComponent {

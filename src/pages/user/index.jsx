@@ -91,7 +91,7 @@ class User extends React.PureComponent {
                 >
                     编辑
                 </a>
-                <Divider type="vertical" />
+                <Divider style={{ margin: '14px 0' }} type="vertical" />
                 <Popconfirm title="确定删除?" onConfirm={() => this.delUser(record.id)}>
                     <a href="javascript:;">删除</a>
                 </Popconfirm>
@@ -251,7 +251,7 @@ class User extends React.PureComponent {
         return (
             <div>
                 <SearchForm schema={schema.searchSchema} uiSchema={schema.searchUiSchema} handleSubmit={this.handleSearch} handleReset={this.handleReset} />
-                <Divider />
+                <Divider style={{ margin: '14px 0' }} />
                 <div style={{ marginBottom: 16 }}>
                     <Button
                         type="primary"
@@ -260,7 +260,7 @@ class User extends React.PureComponent {
                     >
                         新增
                     </Button>
-                    <Divider type="vertical" />
+                    <Divider style={{ margin: '14px 0' }} type="vertical" />
                     <Popconfirm title="确定删除?" onConfirm={this.batchDelUser}>
                         <Button
                             type="danger"

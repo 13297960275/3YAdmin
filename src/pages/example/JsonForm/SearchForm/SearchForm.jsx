@@ -314,7 +314,7 @@ class SearchFormTest extends React.PureComponent {
                     <Button type="primary" onClick={this.parseSchema}>重新解析</Button>
                 </div>
                 {this.state.error != '' ? <div>{this.state.error}</div> : null}
-                <Divider />
+                <Divider style={{ margin: '14px 0' }} />
                 <SearchForm noCacheSchema={true} schema={this.state.searchSchema} uiSchema={this.state.searchUiSchema} handleSubmit={this.handleSearch} handleReset={this.handleReset} />
                 {this.state.data != '' ? <div>
                     {this.state.data}

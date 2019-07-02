@@ -27,3 +27,11 @@ body {
 .ant-table-body {
     overflow-x: auto !important;
 }
+
+.ant-divider-horizontal {
+    display: block;
+    height: 1px;
+    width: 100%;
+    margin: 14px 0;
+    clear: both;
+}

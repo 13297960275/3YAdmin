@@ -74,7 +74,7 @@ export default {
     "user_index": User,
     "page404": Page404,
     "page403": Page403,
-    "requestlog":RequestLog,
+    "requestlog": RequestLog,
     // example
     "error_404": Page404,
     "error_403": Page403,

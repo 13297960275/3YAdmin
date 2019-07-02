@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Breadcrumb, Icon } from 'antd';
-import MenuToRouter from '@/menuMapToRouter';
+import MenuToRouter from '@/routers/menuMapToRouter';
 import util from '@/utils/util';
 
 class MyBreadcrumb extends React.PureComponent {

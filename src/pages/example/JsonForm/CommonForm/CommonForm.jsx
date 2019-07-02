@@ -504,7 +504,7 @@ class CommonFormTest extends React.PureComponent {
                     <Tag color="#87d068">FormData</Tag>
                     <TextArea rows={15} defaultValue={JSON.stringify(formData, null, 4)} />
                 </div>
-                <Divider />
+                <Divider style={{ margin: '14px 0' }} />
                 <CommonForm
                     ref={(instance) => { this.editForm = instance; }}
                     schema={this.state.schema}

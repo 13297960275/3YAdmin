@@ -38,7 +38,6 @@ service.interceptors.response.use(
       message.error(res.msg);
       return Promise.reject(res.msg);
     } else {
-
       return response.data;
     }
   },
@@ -64,7 +63,6 @@ service.interceptors.response.use(
       message.error('网络错误!');
     }
     return Promise.reject(error)
-
   })
 
 export default service

@@ -8,10 +8,10 @@ import MyBreadcrumb from '@/containers/MyBreadcrumb';
 import MyNavTabs from '@/containers/MyNavTabsR';
 import { getToken } from '@/utils/token';
 import { getUserInfo, getAccessMemu } from 'api';
-import { updateUserInfo } from '@/reducers/user';
-import { updateAccessMenu } from '@/reducers/app';
+import { updateUserInfo } from '@/redux/reducers/user';
+import { updateAccessMenu } from '@/redux/reducers/app';
 import util from '@/utils/util';
-import constantMenu from '@/constantMenu';
+import constantMenu from '@/routers/customMenu';
 
 const { Content } = Layout;
 
@@ -42,7 +42,7 @@ class TabMode extends React.PureComponent {
         }
     }
     componentDidUpdate(prevProps, prevState) {
-        console.log('componentDidUpdate')
+        // console.log('componentDidUpdate')
         const clientWidth = document.body.clientWidth;
         const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
         const sliderWidth = document.getElementsByClassName('ant-layout-sider')[0].clientWidth
@@ -57,8 +57,8 @@ class TabMode extends React.PureComponent {
     }
     getClientWidth = () => {    // 获取当前浏览器宽度并设置responsive管理响应式
         const clientWidth = document.body.clientWidth;
-        const navTabWidth = document.getElementsByClassName('ant-layout-content')[0].clientWidth
-        const headerWidth = clientWidth - document.getElementsByClassName('ant-layout-sider')[0].clientWidth
+        const navTabWidth = document.getElementsByClassName('ant-layout-content').length > 0 ? document.getElementsByClassName('ant-layout-content')[0].clientWidth : '100%'
+        const headerWidth = document.getElementsByClassName('ant-layout-sider').length > 0 ? (clientWidth - document.getElementsByClassName('ant-layout-sider')[0].clientWidth) : '100%'
         this.setState({
             responsive: clientWidth <= 992,
             collapsed: clientWidth <= 992,
@@ -66,22 +66,24 @@ class TabMode extends React.PureComponent {
             headerWidth
         });
         if (clientWidth < 576) {
-            this.setState({
-                navTabTop: 193
-            });
-            return;
+          this.setState({
+            // navTabTop: 193
+            navTabTop: 65
+          });
+          return;
         }
         if (clientWidth < 768) {
-            this.setState({
-                navTabTop: 129
-            });
-            return;
+          this.setState({
+            // navTabTop: 129
+            navTabTop: 65
+          });
+          return;
         }
         if (clientWidth >= 768) {
-            this.setState({
-                navTabTop: 65
-            });
-            return;
+          this.setState({
+            navTabTop: 65
+          });
+          return;
         }
     }
     toggle = () => {
@@ -135,6 +137,7 @@ class TabMode extends React.PureComponent {
         });
         this.props.updateUserInfo(userInfo);
         this.initChildData(this.props);
+        // console.log('==========', this.props)
     }
     initChildData(props) {
         this.refs['MySider'].wrappedInstance.initMenu(props.location.pathname);
@@ -154,7 +157,7 @@ class TabMode extends React.PureComponent {
                     </MyHeader>
                     {/* <MyBreadcrumb style={{ padding: '10px 10px 10px 17px', background: '#e6f7ff', marginTop: this.state.navTabTop + 59 + (this.state.navTabShow ? 0 : -59) }} /> */}
                     <Content style={{ padding: 24, paddingTop: 0 }}>
-                        <MyNavTabs navWith={ this.state.navTabWidth } style={{ marginTop: this.state.navTabTop, display: this.state.navTabShow ? 'block' : 'none' }} show={this.state.navTabShow} />
+                        <MyNavTabs navWith={ this.state.headerWidth } style={{ marginTop: this.state.navTabTop, display: this.state.navTabShow ? 'block' : 'none' }} show={this.state.navTabShow} />
                     </Content>
                 </Layout>
             </Layout>

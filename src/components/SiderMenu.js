@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import MenuToRouter from '@/menuMapToRouter';
+import MenuToRouter from '@/routers/menuMapToRouter';
 
 const { SubMenu } = Menu;
 const { Item } = Menu;

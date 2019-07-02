@@ -141,7 +141,7 @@ class RoleUser extends React.PureComponent {
         return (
             <div>
                 <SearchForm schema={schema.searchSchema} uiSchema={schema.searchUiSchema} handleSubmit={this.handleSearch} handleReset={this.handleReset} />
-                <Divider />
+                <Divider style={{ margin: '14px 0' }} />
                 <Table
                     columns={this.columns}
                     rowKey={record => record.id}
